@@ -1,0 +1,86 @@
+---
+title: "Introduction to the FARS package"
+author: "Bart Lauwers"
+date: "`r Sys.Date()`"
+output:
+    rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This package is intended to meet the requirements of the week 4 assignment in the Coursera course - Building R Packages.
+
+## Introduction
+
+The functions in this package work with data from the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System, which is a nationwide census providing the American public yearly data regarding fatal injuries suffered in motor vehicle traffic crashes. The data included in this package was sourced here:
+
+[fars_data.zip](https://d18ky98rnyall9.cloudfront.net/_e1adac2a5f05192dc8780f3944feec13_fars_data.zip?Expires=1488412800&Signature=EW0XhEUwrkXBPqr656sNUUjxVhmMw9Q9e2AzSjs-7VWGI0ldsENuRITn03NIn3nouhDEoQWacZqyXIvgxNzs2TDO1imSP04k-DEA~UuvY6u97PM1xQSOvSwZXe62fyOefCebkDK4-akm6e3yz3iWsN62phig4aNgmtqjjDX4m8g_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A)
+
+The package can be loaded using the `library(fars)` command or `loadNamespace('fars')`.
+
+## Installation
+
+Because this package is not on CRAN, you will need to install it from this GitHub repo.
+
+```{r eval=FALSE}
+install.packages("ghit")
+library(ghit)
+ghit::install_github("blauwers/fars")
+```
+
+
+## Overview
+
+There are 5 main functions in this library:
+
+`fars_read(<filename>)` will read the data from a FARS datafile
+
+`make_filename(<year>)` will produce the name of the FARS datafile for a given year
+
+`fars_read_years(<years>)` will read the FARS datafiles for the given years, and return a tibble with month and year for each record in the dataset
+
+`fars_summarize_years(<years>)` will read the FARS datafiles for the given years, and return a tibble with the number of records per month per year
+
+`fars_map_state(<state.num>, <year>)` will read the FARS datafile for a given year and plot the accidents for the selected state on a map of that state
+
+## Examples
+
+Loading the library
+
+```{r load the library, message=FALSE, warning=FALSE}
+library(fars)
+```
+
+We can read the FARS data for 2014 as follows:
+
+```{r read a FARS data file}
+accidents_2014 <- fars_read(make_filename("2014"))
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(accidents_2014, 10))
+```
+
+We could read the data for the years 2013 and 2014 as follows.
+
+```{r, eval=FALSE}
+fars_read_years(c(2013, 2014))
+```
+
+Or, we can summarize the data for 2013, 2014, and 2015 as follows.
+
+```{r}
+summary <- fars_summarize_years(c(2013, 2014, 2015))
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(summary, 10))
+```
+
+Finally, we can also plot the accident data for a specific state on the map in the following way.
+
+```{r show accidents on map, fig.width=6, fig.height=6}
+fars_map_state(45, 2015)
+```

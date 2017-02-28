@@ -1,0 +1,16 @@
+Package: fars
+Type: Package
+Title: FARS Analysis and Visualization
+Version: 0.1.0
+Author: Bart Lauwers
+Maintainer: Bart Lauwers <blauwers@gmail.com>
+Description: Provides data analysis and visualization functions for
+    the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System (FARS).
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Depends: dplyr, maps, readr, tidyr
+Suggests: knitr, rmarkdown,
+    testthat
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
